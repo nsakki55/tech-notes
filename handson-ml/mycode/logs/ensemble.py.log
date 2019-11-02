@@ -1,0 +1,51 @@
+INFO : 2019-11-02 14:36:35,736 : mnist datasets:X shape (70000, 784), y shape (70000,)
+INFO : 2019-11-02 14:42:21,172 : mnist datasets:X shape (70000, 784), y shape (70000,)
+INFO : 2019-11-02 14:42:22,082 : train shape:(56000, 784) test shape(14000, 784)
+INFO : 2019-11-02 14:42:22,084 : trainRandomForestClassifier
+INFO : 2019-11-02 14:42:25,562 : trainExtraTreesClassifier
+INFO : 2019-11-02 14:42:29,098 : trainSVC
+INFO : 2019-11-02 14:45:31,641 : load mnist
+INFO : 2019-11-02 14:45:50,118 : mnist datasets:X shape (70000, 784), y shape (70000,)
+INFO : 2019-11-02 14:45:51,216 : train shape:(56000, 784) test shape(14000, 784)
+INFO : 2019-11-02 14:45:51,216 : trainRandomForestClassifier
+INFO : 2019-11-02 14:45:53,908 : trainExtraTreesClassifier
+INFO : 2019-11-02 14:45:56,598 : trainSVC
+INFO : 2019-11-02 14:46:21,475 : ready main
+INFO : 2019-11-02 14:46:21,475 : load mnist
+INFO : 2019-11-02 14:46:54,691 : ready main
+INFO : 2019-11-02 14:46:54,692 : load mnist
+INFO : 2019-11-02 14:47:56,715 : ready main
+INFO : 2019-11-02 14:47:56,715 : load mnist
+INFO : 2019-11-02 14:48:42,760 : ready main
+INFO : 2019-11-02 14:48:42,760 : load mnist
+INFO : 2019-11-02 14:49:17,825 : ready main
+INFO : 2019-11-02 14:49:17,825 : load mnist
+INFO : 2019-11-02 14:49:54,430 : ready main
+INFO : 2019-11-02 14:49:54,430 : load mnist
+INFO : 2019-11-02 14:51:04,768 : ready main
+INFO : 2019-11-02 14:51:04,768 : load mnist
+INFO : 2019-11-02 15:00:43,197 : ready main
+INFO : 2019-11-02 15:00:43,198 : load mnist
+INFO : 2019-11-02 15:01:01,928 : mnist datasets:X shape (70000, 784), y shape (70000,)
+INFO : 2019-11-02 15:01:03,050 : train shape:(56000, 784) test shape(14000, 784)
+INFO : 2019-11-02 15:01:03,051 : trainRandomForestClassifier
+INFO : 2019-11-02 15:01:05,847 : trainExtraTreesClassifier
+INFO : 2019-11-02 15:01:08,586 : trainSVC
+INFO : 2019-11-02 15:18:33,990 : ready main
+INFO : 2019-11-02 15:18:33,991 : load mnist
+INFO : 2019-11-02 15:18:51,996 : mnist datasets:X shape (70000, 784), y shape (70000,)
+INFO : 2019-11-02 15:18:53,058 : train shape:(56000, 784) test shape(14000, 784)
+INFO : 2019-11-02 15:18:53,059 : train RandomForestClassifier
+INFO : 2019-11-02 15:18:55,975 : RandomForestClassifier accuracy:0.945
+INFO : 2019-11-02 15:18:55,975 : train ExtraTreesClassifier
+INFO : 2019-11-02 15:18:58,828 : ExtraTreesClassifier accuracy:0.9484821428571428
+INFO : 2019-11-02 15:18:58,828 : train SVC
+INFO : 2019-11-02 15:24:24,475 : ready main
+INFO : 2019-11-02 15:24:24,475 : load mnist
+INFO : 2019-11-02 15:24:43,056 : mnist datasets:X shape (70000, 784), y shape (70000,)
+INFO : 2019-11-02 15:24:44,155 : train shape:(56000, 784) test shape(14000, 784)
+INFO : 2019-11-02 15:24:44,155 : train RandomForestClassifier
+INFO : 2019-11-02 15:24:46,880 : RandomForestClassifier accuracy:0.945
+INFO : 2019-11-02 15:24:46,880 : train ExtraTreesClassifier
+INFO : 2019-11-02 15:24:49,691 : ExtraTreesClassifier accuracy:0.9484821428571428
+INFO : 2019-11-02 15:24:49,691 : train SVC
