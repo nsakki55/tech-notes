@@ -564,9 +564,15 @@ Wmapはガウス分布の平均を定義する。
 最終的に、ロジスティックシグモイド関数での畳み込み積分をあらわしているので、解析的に評価できない  
 ロジスティックシグモイド関数とプロビット関数の逆関数の類似性を利用すれば、いい近似を得ることができる。  
 
-
-
-
+## 5章
+5.4~5.4.6の解説  
+https://speakerdeck.com/hassaku/prml-chapter5-hessian-matrix?slide=12  
+5.5.6~5.5.7  
+https://www.slideshare.net/RicksonJr/bbb-15673191  
+名古屋大の輪講スライド  
+https://www.slideshare.net/t_koshikawa/prml-5-pp227pp247  
+松尾研のスライド  
+https://www.slideshare.net/matsuolab/prml5-78266012  
 
 
 
