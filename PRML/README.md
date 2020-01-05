@@ -2,7 +2,7 @@
 作者によるノートブック  
 https://github.com/amber-kshz/PRML  
 
-## 1章
+## 1章　
 １章の内容まとめスライド  
 https://www.slideshare.net/takushimiki/prml-52113785  
 https://www.slideshare.net/matsuolab/prml1-78265686　　
