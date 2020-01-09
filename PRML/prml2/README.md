@@ -70,7 +70,14 @@ wの事前分布を考え、その線形結合であるy自身もガウス分布
 #### 6-4-5
 ニューラルネットワークの隠れユニット数Mを無限大に極限をとると、ガウス過程に近く。  
 
+### 7章
+https://www.slideshare.net/tsukasafukunaga5/prml07-17444396  
+https://www.slideshare.net/thorikawa/prml-chapter7  
 
+松尾研  
+https://www.slideshare.net/matsuolab/prml7-78266098  
+
+カーネル法：カーネル関数を用いることで、特徴空間の写像を明示的に構成する必要がなくなる（カーネルトリック）  
 
 
 
