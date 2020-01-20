@@ -147,6 +147,6 @@ https://www.slideshare.net/matsuolab/prml8-78266113
 ### 8-1
 同時確率分布は乗法定理で分解可能。　　
 
-　　
+　　　
 　　
 　
