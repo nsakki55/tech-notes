@@ -157,7 +157,7 @@ https://www.slideshare.net/KeisukeSugawara/prml-em
 https://www.slideshare.net/matsuolab/prml8-78266113  
 
 
-## １０章  
+## 10章  
 須山さん解説ブログ
 http://machine-learning.hatenablog.com/entry/2016/01/23/123033  
 解説スライド  
@@ -174,3 +174,22 @@ https://qiita.com/amber_kshz/items/3049ab54385e2ce76b29
 松尾研
 slideshare.net/matsuolab/prml11-78266228  
 
+
+## 12章
+解説スライド  
+https://www.slideshare.net/taki0313/prml12  
+正規直交基底求め方  
+https://mathwords.net/seikityokkoukitei  
+松尾研  
+https://www.slideshare.net/matsuolab/prml12-78266255  
+
+
+## 13章
+
+
+## 14章  
+解説スライド  
+https://www.slideshare.net/tonets/prml14  
+https://www.slideshare.net/pecorarista/prml-14  
+https://www.slideshare.net/ssuser9eb780/prml-14-75527511  
+https://www.slideshare.net/tsubosaka/prml14-5  
