@@ -168,4 +168,9 @@ https://www.slideshare.net/matsuolab/prml10-78266202
 
 
 ## 11章
+https://www.slideshare.net/koji_matsuda/prml-1124  
+Python実装記事
+https://qiita.com/amber_kshz/items/3049ab54385e2ce76b29    
+松尾研
+slideshare.net/matsuolab/prml11-78266228  
 
