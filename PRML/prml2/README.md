@@ -130,8 +130,8 @@ https://www.slideshare.net/Kawamoto_Kazuhiko/ss-35483453
 https://www.slideshare.net/antiplastics/prml8   
 8.2解説
 https://www.slideshare.net/sleepy_yoshi/prml-82  
-8小全体のまとめ
-http://bin.t.u-tokyo.ac.jp/summercamp2015/document/prml8_shibahara.pdf
+8小全体のまとめ  
+http://bin.t.u-tokyo.ac.jp/summercamp2015/document/prml8_shibahara.pdf  
 松尾研  
 https://www.slideshare.net/matsuolab/prml8-78266113  
 
