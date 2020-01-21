@@ -148,5 +148,24 @@ https://www.slideshare.net/matsuolab/prml8-78266113
 同時確率分布は乗法定理で分解可能。　　
 
 　　　
-　　
-　
+   
+## 9章
+解説スライド  
+https://www.slideshare.net/takao-y/20131113-em  
+https://www.slideshare.net/KeisukeSugawara/prml-em  
+松尾研  
+https://www.slideshare.net/matsuolab/prml8-78266113  
+
+
+## １０章  
+須山さん解説ブログ
+http://machine-learning.hatenablog.com/entry/2016/01/23/123033  
+解説スライド  
+https://www.slideshare.net/takao-y/ss-28872465  
+https://www.slideshare.net/ruto5/prml14th-107  
+松尾研  
+https://www.slideshare.net/matsuolab/prml10-78266202  
+
+
+## 11章
+
