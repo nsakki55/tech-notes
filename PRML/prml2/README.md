@@ -162,8 +162,12 @@ https://www.slideshare.net/matsuolab/prml8-78266113
 須山さん解説ブログ
 http://machine-learning.hatenablog.com/entry/2016/01/23/123033  
 解説スライド  
-https://www.slideshare.net/takao-y/ss-28872465  
+10.1,10.2までの神スライド    
+https://www.slideshare.net/takao-y/ss-28872465   
+10.7の解説  
 https://www.slideshare.net/ruto5/prml14th-107  
+10.3以降の解説  
+https://www.slideshare.net/NarihiraTakuya/2012-02prmlchap10latter?qid=b29f8f25-01ef-4834-8eb5-bff502891769&v=&b=&from_search=26  
 松尾研  
 https://www.slideshare.net/matsuolab/prml10-78266202  
 
