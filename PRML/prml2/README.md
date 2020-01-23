@@ -1,5 +1,8 @@
 # 下巻まとめ
 
+PRML合宿まとめサイト  
+http://bin.t.u-tokyo.ac.jp/prml2009/  
+
 ## 6章  
 https://www.slideshare.net/KeisukeSugawara/slide0629  
 https://www.slideshare.net/yukaraikemiya/6-15415589  
