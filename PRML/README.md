@@ -10,3 +10,6 @@ https://qiita.com/amber_kshz/items/e912a59ffc1365cb6adf
  
 PRML合宿まとめサイト  
 http://bin.t.u-tokyo.ac.jp/prml2009/  
+
+松尾研輪講スライド。ただのまとめなので、重要点だけ追うのに便利ぐらい。
+https://www.slideshare.net/matsuolab?utm_campaign=profiletracking&utm_medium=sssite&utm_source=ssslideview
