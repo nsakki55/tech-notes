@@ -7,4 +7,6 @@ https://www.microsoft.com/en-us/research/wp-content/uploads/2016/05/prml-web-sol
 python実装Qiita記事  
 公式の実装をそのまま解説した内容になっている  
 https://qiita.com/amber_kshz/items/e912a59ffc1365cb6adf  
-
+ 
+PRML合宿まとめサイト  
+http://bin.t.u-tokyo.ac.jp/prml2009/  
