@@ -2,7 +2,7 @@
 
 PRML合宿まとめサイト  
 http://bin.t.u-tokyo.ac.jp/prml2009/  
-
+　
 ## 6章  
 https://www.slideshare.net/KeisukeSugawara/slide0629  
 https://www.slideshare.net/yukaraikemiya/6-15415589  
@@ -201,3 +201,5 @@ https://www.slideshare.net/tonets/prml14
 https://www.slideshare.net/pecorarista/prml-14  
 https://www.slideshare.net/ssuser9eb780/prml-14-75527511  
 https://www.slideshare.net/tsubosaka/prml14-5  
+　  
+   
