@@ -1,5 +1,7 @@
 ## つくりながら学ぶ! PyTorchによる発展ディープラーニング
 
+GPUを使う場合は、研究室PCの仮想環境をpytorchにする
+
 <div align="center">
 <img src="./etc/pytorch_advanced.png" alt="PyTorchによる発展ディープラーニング" title="PyTorchによる発展ディープラーニング" width=60%>
 </div>
