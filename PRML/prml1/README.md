@@ -383,6 +383,9 @@ p(M|D)∝p(M)p(D|M)
 データの観測前に基底関数を固定するため、入力空間の次元数に応じて指数的に基底関数の数を増やす必要がある（次元ん呪い）  
 
 ## 4章
+全部の解説スライド  
+https://www.slideshare.net/pecorarista/prml04?qid=b2844adf-881d-45cc-ba05-364d13259b3a&v=&b=&from_search=1  
+
 4.4-4.5解説  
 https://www.slideshare.net/yukimatsubara9847?utm_campaign=profiletracking&utm_medium=sssite&utm_source=ssslideview  
 松尾研まとめ  
