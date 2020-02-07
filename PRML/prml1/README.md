@@ -579,6 +579,12 @@ https://www.slideshare.net/t_koshikawa/prml-5-pp227pp247
 松尾研のスライド  
 https://www.slideshare.net/matsuolab/prml5-78266012  
 
+勾配降下法をまとめた記事    
+http://yaju3d.hatenablog.jp/entry/2017/08/27/233459  
+
+勾配降下法の学習率の調整アルゴリズム  
+https://www.slideshare.net/nishio/ss-66840545  
+
 これまでは線形回帰を行ない、解析的に解ける利点がある一方、次元の呪いの問題がある。  
 解決する手法  
 SVM:訓練データ点を中心とした基底関数群を定義し、訓練中に基底関数を選択する。  
