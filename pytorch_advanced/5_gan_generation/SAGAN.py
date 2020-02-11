@@ -18,8 +18,8 @@ import torch.optim as optim
 
 from torchvision import transforms
 
-from dcgan_generator import Generator
-from dcgan_discriminator import Discriminator
+from sagan_generator import Generator
+from sagan_discriminator import Discriminator
 from dataloader import ImageTransform, GAN_Img_Dataset
 
 # Setup seeds
@@ -54,7 +54,7 @@ def plot_lr(df):
     ax.set_ylabel('D loss', fontsize=14)
     ax.set_title('D loss')
 
-    fig.savefig('result/learnig_curbe.png')
+    fig.savefig('SAGAN/learnig_curbe.png')
 
 def main():
 
@@ -91,9 +91,6 @@ def main():
     beta1, beta2 = 0.0, 0.9
     g_optimizer = torch.optim.Adam(G.parameters(), g_lr, [beta1, beta2])
     d_optimizer = torch.optim.Adam(D.parameters(), d_lr, [beta1, beta2])
-
-    # 誤差関数を定義
-    criterion = nn.BCEWithLogitsLoss(reduction='mean')
 
     # パラメータをハードコーディング
     z_dim = 100
@@ -148,21 +145,26 @@ def main():
             # 正解ラベルと偽ラベルを作成
             # epochの最後のイテレーションはミニバッチの数が少なくなる
             mini_batch_size = imges.size()[0]
-            label_real = torch.full((mini_batch_size,), 1).to(device)
-            label_fake = torch.full((mini_batch_size,), 0).to(device)
 
             # 真の画像を判定
-            d_out_real = D(imges)
+            d_out_real, _, _ = D(imges)
 
             # 偽の画像を生成して判定
             input_z = torch.randn(mini_batch_size, z_dim).to(device)
             input_z = input_z.view(input_z.size(0), input_z.size(1), 1, 1)
-            fake_images = G(input_z)
-            d_out_fake = D(fake_images)
+            fake_images, _, _ = G(input_z)
+            d_out_fake, _, _ = D(fake_images)
 
-            # 誤差を計算
-            d_loss_real = criterion(d_out_real.view(-1), label_real)
-            d_loss_fake = criterion(d_out_fake.view(-1), label_fake)
+
+            # 誤差を計算→hinge version of the adversarial lossに変更
+            d_loss_real = torch.nn.ReLU()(1.0 - d_out_real).mean()
+            # 誤差　d_out_realが1以上で誤差0になる。d_out_real>1で、
+            # 1.0 - d_out_realが負の場合ReLUで0にする
+
+            d_loss_fake = torch.nn.ReLU()(1.0 + d_out_fake).mean()
+            # 誤差　d_out_fakeが-1以下なら誤差0になる。d_out_fake<-1で、
+            # 1.0 + d_out_realが負の場合ReLUで0にする
+
             d_loss = d_loss_real + d_loss_fake
 
             # バックプロパゲーション
@@ -178,11 +180,11 @@ def main():
             # 偽の画像を生成して判定
             input_z = torch.randn(mini_batch_size, z_dim).to(device)
             input_z = input_z.view(input_z.size(0), input_z.size(1), 1, 1)
-            fake_images = G(input_z)
-            d_out_fake = D(fake_images)
+            fake_images, _, _ = G(input_z)
+            d_out_fake, _, _ = D(fake_images)
 
             # 誤差を計算
-            g_loss = criterion(d_out_fake.view(-1), label_real)
+            g_loss = - d_out_fake.mean()
 
             # バックプロパゲーション
             g_optimizer.zero_grad()
@@ -200,6 +202,7 @@ def main():
         # 10epochごとに生成結果を保存
         if (epoch + 1) % 10 == 0:
                 # 出力
+                
             fig = plt.figure(figsize=(15, 3))
             for i in range(0, 5):
 
@@ -207,7 +210,7 @@ def main():
                 plt.subplot(1, 5, i+1)
                 plt.imshow(fake_images[i].cpu().detach().numpy().transpose(1, 2, 0))
             
-            plt.savefig('result/{}th_epoch_generated_figure.png'.format(epoch+1))
+            plt.savefig('SAGAN/{}th_epoch_generated_figure.png'.format(epoch+1))
 
         # epochのphaseごとのlossと正解率
         t_epoch_finish = time.time()
@@ -222,11 +225,11 @@ def main():
                      'd_loss' : epoch_d_loss/batch_size}
         logs.append(log_epoch)
         df = pd.DataFrame(logs) 
-        df.to_csv('result/log_output.csv')  
+        df.to_csv('SAGAN/log_output.csv')  
         plot_lr(df) 
 
-    g_save_path = 'result/weight_generator.pth'
-    d_save_path = 'result/weight_discriminator.pth'
+    g_save_path = 'SAGAN/weight_generator.pth'
+    d_save_path = 'SAGAN/weight_discriminator.pth'
 
     torch.save(G.state_dict(), g_save_path)
     torch.save(D.state_dict(), d_save_path)
@@ -254,7 +257,7 @@ def main():
         plt.subplot(2, 5, 5+i+1)
         plt.imshow(fake_images[i].cpu().detach().numpy().transpose(1, 2, 0))
         
-    plt.savefig('result/generated_figure.png')
+    plt.savefig('SAGAN/generated_figure.png')
 
 if __name__ == '__main__':
     main()
