@@ -135,6 +135,8 @@ https://www.slideshare.net/antiplastics/prml8
 https://www.slideshare.net/sleepy_yoshi/prml-82  
 8小全体のまとめ  
 http://bin.t.u-tokyo.ac.jp/summercamp2015/document/prml8_shibahara.pdf  
+８章全体解説  
+https://speakerdeck.com/gucchi/prmlsemina-7632fd70-09b9-4590-a2bf-6e5d3134fcc3  
 松尾研  
 https://www.slideshare.net/matsuolab/prml8-78266113  
 
