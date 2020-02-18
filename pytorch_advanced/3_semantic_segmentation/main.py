@@ -156,7 +156,7 @@ def train_model(net, dataloaders_dict, criterion, scheduler, optimizer, num_epoc
         df.to_csv("log_output.csv")
         
     # 最後のネットワークを保存する
-    torch.save(net.state_dict(), 'weights/pspnet50_' +
+    torch.save(net.state_dict(), 'weights/pspnet50_original_' +
                str(epoch+1) + '.pth')
 
 
