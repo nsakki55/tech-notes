@@ -6,3 +6,5 @@ http://www.deeplearningbook.org/
 https://deeplearning.jp/seminar-2/#1515565927378-9a11fdc4-798a  
 
 
+
+
