@@ -104,3 +104,14 @@ mcmc_areas(
 )
 
 mcmc_acf_bar(mcmc_sample, pars = c('mu', 'sigma'))
+
+animal_num <- read.csv('../book-data/2-5-1-animal-num.csv')
+head(animal_num, n=3)
+
+sample_size <- nrow(animal_num)
+data_list <- list(animal_num　= animal_num$animal_num, N=sample_size)
+mcmc_normal <- stan(
+  file = 'normal-dist.stan',
+  data = data_list,
+  seed = 1
+)
