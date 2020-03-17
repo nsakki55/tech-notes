@@ -115,3 +115,25 @@ mcmc_normal <- stan(
   data = data_list,
   seed = 1
 )
+mcmc_poisson <- stan(
+  file = 'poisson-dist.stan',
+  data = data_list,
+  seed = 1
+)
+
+y_rep_normal <- rstan::extract(mcmc_normal)$pred
+y_rep_poisson <- rstan::extract(mcmc_poisson)$pred
+
+dim(y_rep_normal)
+
+y_rep_normal[1, ]
+y_rep_poisson[1, ]
+
+hist(animal_num$animal_num)
+hist(y_rep_normal[1,])
+hist(y_rep_poisson[1,])
+
+library(bayesplot)
+ppc_hist(y = animal_num$animal_num, yrep = y_rep_normal[1:5,] )
+ppc_hist(y = animal_num$animal_num, yrep = y_rep_poisson[1:5,] )
+
