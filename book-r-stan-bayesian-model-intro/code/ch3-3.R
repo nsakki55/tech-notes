@@ -29,3 +29,26 @@ mcmc_result_pred <- stan(
 )
 
 print(mcmc_result_pred)
+
+mcmc_sample_pred  <- rstan::extract(mcmc_result_pred, permuted=FALSE)
+
+mcmc_intervals(
+  mcmc_sample_pred, 
+  regex_pars = c('sales_pred.'),
+  prob=0.8,
+  prob_outer = 0.95
+)
+
+mcmc_intervals(
+  mcmc_sample_pred, 
+  pars = c('mu_pred[1]', 'sales_pred[1]'),
+  prob=0.8,
+  prob_outer = 0.95
+)
+
+mcmc_areas(
+  mcmc_sample_pred,
+  pars = c('sales_pred[1]', 'sales_pred[20]'),
+  prob=0.6,
+  prob_outer = 0.99
+  )
