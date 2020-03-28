@@ -10,3 +10,5 @@ https://www.slideshare.net/simizu706/stan-64926504
 事前分布についての論文紹介のスライド  
 https://www.slideshare.net/hoxo_m/ss-59418886  
 
+MCMCの解説スライド  
+https://www.slideshare.net/matsukenbook/4-56002293  
