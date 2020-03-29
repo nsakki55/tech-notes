@@ -1,10 +1,10 @@
-data{
+data {
   int N;
   vector[N] sales_a;
   vector[N] sales_b;
 }
 
-parameters{
+parameters {
   real mu_a;
   real<lower=0> sigma_a;
   real mu_b;
@@ -16,7 +16,7 @@ model{
   sales_b ~ normal(mu_b, sigma_b);
 }
 
-generated quantities {
-  real diff;                // ビールAとBの売り上げ平均の差
+generated quantities{
+  real diff;
   diff = mu_b - mu_a;
 }
