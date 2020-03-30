@@ -96,3 +96,34 @@ standata_brms <- make_standata(
   data = file_beer_sales_2
 )
 standata_brms
+
+simple_lm_brms_stan <- stan(
+  file = 'brms-stan-code.stan',
+  data = standata_brms,
+  seed = 1
+)
+
+simple_lm_brms_stan
+
+stanplot(simple_lm_brms,
+     type = 'intervals',
+     pars = '^b_',
+     prob = 0.8,
+     prob_outer = 0.95)
+
+newdata <- data.frame(temperature = 20)
+fitted(simple_lm_brms, newdata)
+
+predict(simple_lm_brms, newdata)
+
+mcmc_sample <- as.mcmc(simple_lm_brms, combine_chains = TRUE)
+mcmc_sample
+
+eff <- marginal_effects(simple_lm_brms)
+plot(eff, points=TRUE)
+
+eff_pre <- marginal_effects(simple_lm_brms, method='predict')
+plot(eff_pre, points=TRUE)
+
+eff_ <- marginal_effects(simple_lm_brms, effects='temperature')
+plot(eff_, points=TRUE)
