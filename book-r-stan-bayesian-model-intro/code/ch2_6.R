@@ -21,3 +21,6 @@ mcmc_result <- stan(
 )
 
 mcmc_result
+
+mcmc_sample <- rstan::extract(mcmc_result, permuted=FALSE)
+mcmc_dens(mcmc_sample, pars='diff')
