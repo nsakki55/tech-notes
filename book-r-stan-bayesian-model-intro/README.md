@@ -12,3 +12,6 @@ https://www.slideshare.net/hoxo_m/ss-59418886
 
 MCMCの解説スライド  
 https://www.slideshare.net/matsukenbook/4-56002293  
+
+作者ブログ  
+https://logics-of-blue.com/  
