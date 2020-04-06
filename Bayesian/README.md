@@ -16,3 +16,6 @@ https://mieruca-ai.com/ai/markov_model_hmm/
 
 欠損値補完解説  
 http://machine-learning.hatenablog.com/entry/2017/08/30/221801  
+
+LDAあらびきさん解説  
+alendar.google.com/calendar/r?tab=rc1  
