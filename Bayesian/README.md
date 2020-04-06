@@ -19,3 +19,5 @@ http://machine-learning.hatenablog.com/entry/2017/08/30/221801
 
 LDAあらびきさん解説  
 alendar.google.com/calendar/r?tab=rc1  
+http://acro-engineer.hatenablog.com/entry/2017/12/11/120000  
+
