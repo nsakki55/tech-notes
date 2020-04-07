@@ -22,7 +22,9 @@ https://www.slideshare.net/mknh1122/svm-13623887
 https://statistics.co.jp/reference/software_R/statR_9_principal.pdf  
 https://qiita.com/NoriakiOshita/items/460247bb57c22973a5f0  
 共分散行列の固有値問題に着地できる理由を明記した解説　 
-http://ibis.t.u-tokyo.ac.jp/suzuki/lecture/2015/dataanalysis/L7.pdf  
+https://nehori.com/nikki/2019/04/22/post-10464/  
+http://ibis.t.u-tokyo.ac.jp/suzuki/lecture/2015/dataanalysis/L7.pdf   
+
 
 
 決定木とランダムフォレストの解説スライド  
