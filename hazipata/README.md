@@ -18,4 +18,5 @@ SVMの詳しいスライド
 https://www.slideshare.net/moa108/8-28571831  
 
 
-
+決定木とランダムフォレストの解説スライド  
+https://www.slideshare.net/teppeibaba5/ss-37143977  
