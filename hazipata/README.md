@@ -18,5 +18,10 @@ SVMの詳しいスライド
 https://www.slideshare.net/moa108/8-28571831  
 https://www.slideshare.net/mknh1122/svm-13623887  
 
+主成分分析の解説  
+https://statistics.co.jp/reference/software_R/statR_9_principal.pdf  
+https://qiita.com/NoriakiOshita/items/460247bb57c22973a5f0  
+
 決定木とランダムフォレストの解説スライド  
 https://www.slideshare.net/teppeibaba5/ss-37143977  
+
