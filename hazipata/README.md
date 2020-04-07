@@ -16,7 +16,7 @@ https://www.slideshare.net/moa108/5-kknn
  
 SVMの詳しいスライド  
 https://www.slideshare.net/moa108/8-28571831  
-
+https://www.slideshare.net/mknh1122/svm-13623887  
 
 決定木とランダムフォレストの解説スライド  
 https://www.slideshare.net/teppeibaba5/ss-37143977  
