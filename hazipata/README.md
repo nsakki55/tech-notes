@@ -25,7 +25,8 @@ https://qiita.com/NoriakiOshita/items/460247bb57c22973a5f0
 https://nehori.com/nikki/2019/04/22/post-10464/  
 http://ibis.t.u-tokyo.ac.jp/suzuki/lecture/2015/dataanalysis/L7.pdf   
 
-
+１０章クラスタリング解説スライド  
+https://www.slideshare.net/yamakatu/hajipata10  
 
 決定木とランダムフォレストの解説スライド  
 https://www.slideshare.net/teppeibaba5/ss-37143977  
