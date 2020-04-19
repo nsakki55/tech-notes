@@ -1,4 +1,4 @@
-# データ貝瀬のための統計モデリング  
+# データ解析のための統計モデリング  
 緑本。文章が分かりやすく読みやすい.  
 
 緑本勉強会のページ  
@@ -33,4 +33,33 @@ https://www.slideshare.net/MasanoriTakano1/4-36246351
 # 5章
 解説スライド  
 https://www.slideshare.net/mocchi_/5glm  
+
+# 6章 
+解説スライド    
+https://www.slideshare.net/yurieoka37/65-37454378  
+
+# 7章
+https://www.slideshare.net/TokorosawaYoshio/7-37671094  
+
+# 8章
+https://www.slideshare.net/logics-of-blue/1-4-25564403  
+
+# 9章
+解説スライド  
+https://www.slideshare.net/eguchiakifumi/9-38813142  
+
+マルコフ連鎖モンテカルロ法  
+https://www.slideshare.net/teramonagi/ss-5190440  
+
+# 10章
+前半,分かりやすい解説  
+https://www.slideshare.net/shinyaakiba/10-39698191  
+
+後半  
+https://www.slideshare.net/tetsuroito/2014093010  
+
+# 11章
+
+https://www.slideshare.net/gepuro/midori11a  
+https://www.slideshare.net/yamakatu/11-40668859  
 
