@@ -25,3 +25,12 @@ https://datachemeng.com/newtonraphson/
 
 線形モデルでは、説明変数が数量型なら重回帰、因子型ならANOVA（分散分析）、数量・因子型ならANCOVA(共分散分析)になる  
 https://www.slideshare.net/logics-of-blue/1-4-25564403  
+
+# 4章
+解説スライド  
+https://www.slideshare.net/MasanoriTakano1/4-36246351  
+
+# 5章
+解説スライド  
+https://www.slideshare.net/mocchi_/5glm  
+
