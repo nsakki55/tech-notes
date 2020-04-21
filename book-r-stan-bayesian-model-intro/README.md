@@ -7,6 +7,9 @@ https://www.slideshare.net/simizu706/stan-62042940
 Stan による統計分析のスライド  
 https://www.slideshare.net/simizu706/stan-64926504  
 
+brmsの基本的な操作方法の記事  
+https://das-kino.hatenablog.com/entry/2018/12/15/230938  
+
 事前分布についての論文紹介のスライド  
 https://www.slideshare.net/hoxo_m/ss-59418886  
 
