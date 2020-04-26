@@ -12,3 +12,9 @@ https://mathtrain.jp/tatami
 二項分布を試行数Nが多い場合の正規分布へ近似  
 https://mathtrain.jp/normalkinji  
 
+必要なサンプルサイズの計算  
+- 標本比率の信頼区間から求める 
+https://bellcurve.jp/statistics/course/9129.html  
+https://toukeigaku-jouhou.info/2018/01/23/how-to-calculate-samplesize/  
+
+
