@@ -21,4 +21,9 @@ https://toukeigaku-jouhou.info/2018/01/23/how-to-calculate-samplesize/
 -- 二項分布において、非復元抽出を考えた場合の分布と思えばよい  
 https://mathtrain.jp/hypergeometric  
 
+モーメント母関数について  
+-- exp(tX)の期待値をとる  
+https://mathtrain.jp/momentgf  
+https://atarimae.biz/archives/11419  
+
 
