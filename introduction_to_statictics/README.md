@@ -13,7 +13,7 @@ https://mathtrain.jp/tatami
 https://mathtrain.jp/normalkinji  
 
 必要なサンプルサイズの計算  
--- 標本比率の信頼区間から求める 
+-- 標本比率の信頼区間から求める  
 https://bellcurve.jp/statistics/course/9129.html  
 https://toukeigaku-jouhou.info/2018/01/23/how-to-calculate-samplesize/  
 
