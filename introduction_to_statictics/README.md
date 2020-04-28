@@ -17,4 +17,8 @@ https://mathtrain.jp/normalkinji
 https://bellcurve.jp/statistics/course/9129.html  
 https://toukeigaku-jouhou.info/2018/01/23/how-to-calculate-samplesize/  
 
+超幾何分布の説明  
+- 二項分布において、非復元抽出を考えた場合の分布と思えばよい  
+https://mathtrain.jp/hypergeometric  
+
 
