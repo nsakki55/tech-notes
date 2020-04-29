@@ -26,4 +26,8 @@ https://mathtrain.jp/hypergeometric
 https://mathtrain.jp/momentgf  
 https://atarimae.biz/archives/11419  
 
+フィッシャー情報量  
+-- 確率分布がパラメータに関してもつ情報量。スコア関数の分散として求められる。  
+https://stats.biopapyrus.jp/glm/fisher-information.html  
+
 
