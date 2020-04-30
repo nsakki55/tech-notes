@@ -30,4 +30,9 @@ https://atarimae.biz/archives/11419
 -- 確率分布がパラメータに関してもつ情報量。スコア関数の分散として求められる。  
 https://stats.biopapyrus.jp/glm/fisher-information.html  
 
+検出力  
+-- 帰無仮説と対立仮説の分布の離れ具合を表す  
+https://bellcurve.jp/statistics/course/12767.html  
+
+
 
