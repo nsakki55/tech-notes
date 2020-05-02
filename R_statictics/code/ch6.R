@@ -6,6 +6,7 @@ var_pool <- sqrt(((length(stat1_man) - 1) * var(stat1_man) + (length(stat1_woman
 var_pool
 
 t_stat <- (mean(stat1_man) - mean(stat1_woman)) /  (var_pool * sqrt(1/length(stat1_man) + 1/length(stat1_woman)))
+t_stat
 qt(0.025, length(stat1_man) + length(stat1_woman) - 2)
 qt(0.025, length(stat1_man) + length(stat1_woman) - 2, lower.tail = FALSE)
 

@@ -29,13 +29,14 @@ stat <- data$stat
 table(stat)
 
 table(math, stat)
+math
 
-math_10 <- ifelse(math == 'D‚«', 1, 0)
-stat_10 <- ifelse(stat == 'D‚«', 1, 0)
+math_10 <- ifelse(math == 'å¥½ã', 1, 0)
+stat_10 <- ifelse(stat == 'å¥½ã', 1, 0)
 
 cor(math_10, stat_10)
 
-# —ûK–â‘è
+# ???K????
 time <- c(1, 3, 10, 12, 6, 3, 8, 4, 1, 5)
 score <- c(20, 40, 100, 80, 50, 50, 70, 50, 10, 60)
 plot(time, score)
