@@ -19,6 +19,7 @@ colnames(subjects) <- c("J", "S", "math", "sci", "E")
 cor_mat <- cor(subjects)
 cor_mat
 
+subjects
 fact_result <- factanal(subjects, factors=2)
 fact_result
 

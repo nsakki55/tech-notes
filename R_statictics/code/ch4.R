@@ -14,6 +14,7 @@ curve(dnorm(x, mean=1, sd=1), add=TRUE)
 curve(dnorm(x, mean=0, sd=2), add=TRUE)
 
 dnorm(1, mean=0, sd=1)
+dnorm(3,mean=0, sd=1)
 
 rnorm(n=5, mean=50, sd=10)
 rnorm(n=5, mean=50, sd=10)

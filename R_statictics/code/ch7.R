@@ -30,7 +30,7 @@ all_mean <- mean(all_data)
 all_mean
 
 all_mean_mat <- matrix(rep(all_mean, 20), nrow=5, ncol=4)
-al_mean_mat
+all_mean_mat
 
 group_mean_mat <- matrix(rep(group_mean, 5), nrow=5, ncol=4, byrow=TRUE)
 group_mean_mat
@@ -76,6 +76,7 @@ meigara
 length(temperature)
 
 summary(aov(taste ~ temperature*meigara))
+summary(aov(taste ~ temperature + meigara + temperature:meigara))
 
 interaction.plot(temperature, meigara, taste)
 interaction.plot(meigara, temperature, taste)

@@ -5,6 +5,8 @@ attach(data)
 
 summary(lm(post~pre+group))
 
+plot(post, group)
+
 summary(aov(post ~ pre +group))
 summary(aov(post ~ pre * group))
 

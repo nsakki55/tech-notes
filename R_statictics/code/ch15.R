@@ -11,7 +11,7 @@ coef(result)[2:3] * sd(result[,2:3]) / sd(result[, 1])
 
 coef(result)
 
-single_result <- update(result, .~., -mother)
+single_result <- update(result, .~. -mother)
 single_result
 summary(single_result)
 

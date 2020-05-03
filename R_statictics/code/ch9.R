@@ -23,6 +23,9 @@ z_score
 hensati <- 10*z_score + 50
 hensati
 
+mean(hensati)
+var(hensati)
+
 plot(data$stat_test1, data$stat_test2)
 cov(data$stat_test1, data$stat_test2)
 cor(data$stat_test1, data$stat_test2)
@@ -39,9 +42,14 @@ chisq.test(cross_table, correct = FALSE)
 
 t.test(data$stat_test1 ~ data$sex, var.equal=TRUE) 
 
+stat_man <- data$stat_test1[data$sex=='男']
+stat_woman <- data$stat_test1[data$sex=='女']
+t.test(stat_man, stat_woman, var.equal = TRUE)
+
 t.test(data$stat_test1, data$stat_test2, paired = TRUE)
 
 bartlett.test(data$stat_test2, data$method)
+bartlett.test(data$stat_test2 ~ data$method)
 oneway.test(data$stat_test2 ~ data$method, var.equal=TRUE)
 TukeyHSD(aov(data$stat_test2 ~ data$method))
 

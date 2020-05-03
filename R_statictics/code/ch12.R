@@ -5,6 +5,7 @@ win_num
 dbinom(win_num, 20, 0.5)
 
 plot(win_num, dbinom(win_num, 20, 0.5), type='h')
+plot(win_num, dbinom(win_num, 20, 0.5), type='p')
 
 pbinom(win_num, 20, 0.5)
 
