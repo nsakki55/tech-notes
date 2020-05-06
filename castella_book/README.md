@@ -3,20 +3,27 @@
 公式ページ  
 https://web.stanford.edu/~hastie/ElemStatLearn/  
 
+
+## 2章
+
 平滑化スプライン  
 https://logics-of-blue.com/%E5%B9%B3%E6%BB%91%E5%8C%96%E3%82%B9%E3%83%97%E3%83%A9%E3%82%A4%E3%83%B3%E3%81%A8%E5%8A%A0%E6%B3%95%E3%83%A2%E3%83%87%E3%83%AB/  
 
 バイアスとバリアンスのトレードオフ  
 https://pekochin.com/bias-variance/  
 
-
-
-章ごとの内容をざっくりまとめる。
 ## 3章
 3章解説スライド  
 解説っていうよりまとめに近い  
 https://www.slideshare.net/shoichipincotaguchi/3-75873101  
-Ridge, Lassoの詳しい内容。変数選択に関わる部分。  
+
+リッジ回帰と多重共線性の関係  
+https://www.bananarian.net/entry/multico-ridge  
+
+グループラッソのpython実装  
+https://qiita.com/AnchorBlues/items/4e50d3b98a40c8b3086e  
+
+
 
 ## 4章
 ４章前半まつけんさん解説スライド   
