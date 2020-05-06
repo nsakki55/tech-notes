@@ -1,4 +1,16 @@
-# Castella book
+# 統計的学習の基礎
+
+公式ページ  
+https://web.stanford.edu/~hastie/ElemStatLearn/  
+
+平滑化スプライン  
+https://logics-of-blue.com/%E5%B9%B3%E6%BB%91%E5%8C%96%E3%82%B9%E3%83%97%E3%83%A9%E3%82%A4%E3%83%B3%E3%81%A8%E5%8A%A0%E6%B3%95%E3%83%A2%E3%83%87%E3%83%AB/  
+
+バイアスとバリアンスのトレードオフ  
+https://pekochin.com/bias-variance/  
+
+
+
 章ごとの内容をざっくりまとめる。
 ## 3章
 3章解説スライド  
