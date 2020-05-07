@@ -3,7 +3,7 @@
 公式ページ  
 https://web.stanford.edu/~hastie/ElemStatLearn/  
 
-
+ 
 ## 2章
 
 平滑化スプライン  
