@@ -75,6 +75,12 @@ KNNの回帰曲線は、着目点に近い点の平均が回帰曲線になる�
 複数のモデルを組み合わせた混合モデルの話。混合モデルのパラメータはEMアルゴリズムを用いて最適化される。
 
 ## 7章
+
+AICとBICについてのスライド。統計モデルの真の分布との比較を行うための情報量基準  
+http://watanabe-www.math.dis.titech.ac.jp/users/swatanab/bayes070.pdf  
+
+
+
 ７章後半解説。内容はCVやモデル選択についてなので、まだわかりやすい方ではある。  
 https://www.slideshare.net/mattuyuya/7-79  
 ### 7-2
