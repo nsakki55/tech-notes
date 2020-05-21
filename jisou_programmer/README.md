@@ -5,8 +5,16 @@
 https://github.com/beproud/jisou-programmer-excerption  
 
 
-## 例外を隠すのではなく、わかりやすい例外を早く上げるコードを書きましょう。
+## loggingの設定
+logging.config.dictConfig  
+https://ahyt910.hateblo.jp/entry/2019/04/16/170339    
 
-辞書のキーがあってもなくても動作するコードを書くより、期待するデータが必ず渡される前提でコードを書くとシンプルになります。 もし呼び出し方を間違えた場合には、例外が発生するため問題に早く気づけます。
+## Pythonライブラリ
+まずは「枯れている」ライブラリを選択するのが定石  
+https://github.com/vinta/awesome-python  
 
+## 一時ファイルの作成  
+tempfile  
+https://docs.python.org/ja/3/library/tempfile.html  
 
+## 
