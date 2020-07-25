@@ -1,0 +1,7 @@
+[0m[[0m[31merror[0m] [0m[0m/Users/satsuki/study/introduction-scala/ch1/match_ex.scala:1:1: expected class or object definition[0m
+[0m[[0m[31merror[0m] [0m[0mval n = 5[0m
+[0m[[0m[31merror[0m] [0m[0m^[0m
+[0m[[0m[31merror[0m] [0m[0m/Users/satsuki/study/introduction-scala/ch1/match_ex.scala:2:1: expected class or object definition[0m
+[0m[[0m[31merror[0m] [0m[0mn match {[0m
+[0m[[0m[31merror[0m] [0m[0m^[0m
+[0m[[0m[31merror[0m] [0m[0mtwo errors found[0m
