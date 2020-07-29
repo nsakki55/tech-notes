@@ -1,6 +1,97 @@
 # Scala 入門
 
 ## Note
+ 
+- lazy  
+lazy val time = new java.util.Date  
+のようにval 宣言の前にlazyをつけると、変数へのアクセス時に初期化を遅らせることができる  
+
+- 変数名はキャメルケース  
+関数、クラス名、定数名はMyClass, MyFunctionのように書き、  
+メソッド名はprintSomethingのように、小文字始まりで書くのが通例  
+
+- メソッド  
+Scalaはクラス、トレイト、オブジェクトに対してメソッドを定義できる  
+
+- 関数  
+scalaではメソッドと関数を別は意味をもつ。メソッドはdefキーワードによって定義される  
+関数名に空白と_を続けると、関数オブジェクトとして値を返せる。  
+関数オブジェクトは、他の関数の引数に渡すことができる
+```
+// メソッド
+def isAlphameric(str: String): Boolean = str.matches("[a-zA-Z0-9\\s]")
+
+// 関数オブジェクト
+val isAlphamericF = isAlphameric _ 
+
+// 関数リテラル
+val isAlphamericF = (str: String) => str.matches("[a-zA-z0-9\\s]")
+
+val si AlphamericF = new Function1[String, Boolean] {
+ def apply(str: String) = str.matches("[a-zA-z0-9\\s]")
+ }
+```
+
+- if/else  
+Scalaっぽくない書き方  
+```
+val weight = 120
+var message: String = null
+if (weight < 100){
+ message = "OK
+ } else {
+ message = "over
+ }
+```
+Scalaっぽい書き方(valによる宣言のみ)  
+```
+val = weight
+message = if (weight < 100) {
+ "OK"
+} else {
+"over"
+}
+
+val message = if (weight < 100) "OK" else "over"
+```
+- match
+```
+val num: Int = mabyNum match {
+ case Some(num) => num
+ case None(num) => 0
+ case 1 | 2 | 3 => 5
+ case _ => 0
+```
+
+- 型  
+Unit: 意味のある値を持たない型＝void  
+AnyVal, AnyRef, Any: AnyRefはユーザーが定義した型、Anyは全ての型のスーパークラス  
+Null: javaのnull型に相当。実際に使うことはない。  
+Nothing: メソッドの途中でreturnしたいときや、プログラムの実行が中断されることを表す.???の型    
+自分で型を定義する方法は, クラス・トレイトの定義の２通りの方法が考えられる  
+
+- クラス  
+基本はPythonと同様.selfの代わりにthisを用いることで、自身の変数にアクセスできる  
+```
+// クラスの定義
+class Point(x: Int, y: Int) {
+// フォールドの宣言
+  val x = x
+  val y = y
+// メソッドの記述
+  def distance(that: Point): Int = {
+    val xdiff = math.abs(this.x - that.x)
+    val ydiff = math.abs(this.y - that.y)
+    math.sqrt(xdiff * xdiff + ydiff * ydiff).toInt
+  }
+
+  def +(that: Point): Point = {
+    new Point(this.x + that.x, this.y + that.y)
+  }
+}
+```
+
+
 - ケースクラス(case class)について    
 case で　classを宣言すると、equal, applyなど、便利なメソッドが追加される  
 コンパニオンオブジェクトが定義される。valで宣言されたフィールドとして扱われる  
