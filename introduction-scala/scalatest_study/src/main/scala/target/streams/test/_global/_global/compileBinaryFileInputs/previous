@@ -1,0 +1,1 @@
+["sbt.Task[scala.collection.immutable.Map[java.lang.String, scala.collection.Seq[scala.Tuple2[java.nio.file.Path, sbt.nio.FileStamp]]]]",{"2.12.10":{"hashes":[],"lastModifiedTimes":[["/Users/satsuki/study/introduction-scala/scalatest_study/src/main/scala/target/scala-2.12/classes",1596096518673],["/Users/satsuki/.sbt/boot/scala-2.12.10/lib/scala-library.jar",1568150453000]]}}]

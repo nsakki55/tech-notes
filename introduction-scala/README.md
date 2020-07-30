@@ -64,6 +64,31 @@ yieldを用いると、コレクションの要素を加工して返すことが
 for (i <- List(1, 2, 3)) yield {
     i + 1
 }
+
+// collectionとの相性がいい
+for {i1 <- Option(1)
+     i2 <- Option(2)
+     i3 <- Option(3)
+} yield i1 + i2 + i3
+
+// for 文を書かないと、ネストしてしまう
+val o1: Option[Int] = Some(1)
+val o2: Option[Int] = Some(2)
+val o3: Option[Int] = Some(3)
+o1.flatMap { i1 => 
+    o2.flatMap { i2 => 
+        o3.flatMap {i3 => 
+            i1 + i2 + i3
+        }
+    }
+}
+
+// yieldでは、ジェネレータの右辺の方が揃っている必要がある
+// 以下はエラーを吐かれる
+for (i <- Option(1); l <- Seq(1, 2)) yield i + l
+
+// foreachをforで置き換える際には、yieldはひつようなくなる
+for (i <- Option(1); l <- Seq(1, 2)) println( i + l )
 ```
 
 - throw  
@@ -324,3 +349,45 @@ def printContext(implicit ctx: Int): Unit = {
 
 - Futureについて  
 非同期に処理される結果が入ったOption型のようなもの  
+Try型が入り、処理が終わった時に作動するコールバック関数を用意しておく  
+```
+val successFuture = Future[Int] { 100 }
+
+val failFuture = Future {
+    throw new RuntimeException("失敗じゃ")
+}
+
+successFuture.onComplete { // Futureの完了時にコールバックを渡せます
+    case Success(intValue) => println(s"future success: ${intValue}")
+    case Failure(_) => sys.error("ここに来ることはないだろう...")
+}
+
+failFuture.onComplete {
+    case Success(_) => sys.error("ここに来ることはないだろう...")
+    case Failure(exception) => println(s"future fail: ${exception}")
+}
+
+// successfulメソッド、failedメソッドで新たにFuture型を作成できる
+val future = Future.successful(2)
+future.onComplete {
+  case Success(result) => println(result)
+  case Failure(t) =>
+}
+
+// Filureの場合に、Successのとして扱えるようにする
+val Future(throw new IllegalArgumentException())
+    .recover{
+        case e: IllegalArgumentException => 0
+    }
+
+```
+Await.resultで、Futureの処理を指定した時間だけ待つことが可能  
+```
+Await.result(future, 10 seconds)
+```
+
+- mainクラス  
+sbtによる実行ではmainクラスを実行する  
+def main(args: Array[String])の形をした部分  
+main関数を定義していなくても、Appトレイトを継承していてもよい  
+

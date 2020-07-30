@@ -1,0 +1,19 @@
+[0m[[0m[31merror[0m] [0m[0m/Users/satsuki/study/introduction-scala/scalatest_study/src/test/scala/GreetingTest.scala:3:28: not found: type FunSuite[0m
+[0m[[0m[31merror[0m] [0m[0mclass GreetingTest extends FunSuite {[0m
+[0m[[0m[31merror[0m] [0m[0m                           ^[0m
+[0m[[0m[31merror[0m] [0m[0m/Users/satsuki/study/introduction-scala/scalatest_study/src/test/scala/GreetingTest.scala:4:3: not found: value test[0m
+[0m[[0m[31merror[0m] [0m[0m  test("引数の人物名に対する挨拶が生成"){[0m
+[0m[[0m[31merror[0m] [0m[0m  ^[0m
+[0m[[0m[31merror[0m] [0m[0m/Users/satsuki/study/introduction-scala/scalatest_study/src/test/scala/GreetingTest.scala:5:15: not found: value Greeting[0m
+[0m[[0m[31merror[0m] [0m[0m    val msg = Greeting.createMessage("John")[0m
+[0m[[0m[31merror[0m] [0m[0m              ^[0m
+[0m[[0m[31merror[0m] [0m[0m/Users/satsuki/study/introduction-scala/scalatest_study/src/test/scala/GreetingTest.scala:9:3: not found: value test[0m
+[0m[[0m[31merror[0m] [0m[0m  test("引数が空文の場合、エラーが吐かれる") {[0m
+[0m[[0m[31merror[0m] [0m[0m  ^[0m
+[0m[[0m[31merror[0m] [0m[0m/Users/satsuki/study/introduction-scala/scalatest_study/src/test/scala/GreetingTest.scala:10:5: not found: value assertThrows[0m
+[0m[[0m[31merror[0m] [0m[0m    assertThrows[IllegalArgumentException] {[0m
+[0m[[0m[31merror[0m] [0m[0m    ^[0m
+[0m[[0m[31merror[0m] [0m[0m/Users/satsuki/study/introduction-scala/scalatest_study/src/test/scala/GreetingTest.scala:11:7: not found: value Greeting[0m
+[0m[[0m[31merror[0m] [0m[0m      Greeting.createMessage("")[0m
+[0m[[0m[31merror[0m] [0m[0m      ^[0m
+[0m[[0m[31merror[0m] [0m[0m6 errors found[0m

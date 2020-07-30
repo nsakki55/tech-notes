@@ -1,0 +1,10 @@
+reload
+exit
+test
+test/scala
+reload
+test
+pwd
+ls
+test
+exit
