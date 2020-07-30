@@ -1,5 +1,7 @@
 # Scala 入門
-
+学んだ基本事項をまとめる  
+[ドワンゴscala研修資料](https://scala-text.github.io/scala_text/)  
+ 
 ## Note
  
 - lazy  
