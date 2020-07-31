@@ -18,7 +18,9 @@ Scalaはクラス、トレイト、オブジェクトに対してメソッドを
 - 関数  
 scalaではメソッドと関数を別は意味をもつ。メソッドはdefキーワードによって定義される  
 関数名に空白と_を続けると、関数オブジェクトとして値を返せる。  
-関数オブジェクトは、他の関数の引数に渡すことができる
+関数オブジェクトは、他の関数の引数に渡すことができる  
+関数は第一級の値(関数を自由に変数や引数に代入したり返り値として返すことができること),  
+メソッドは第１級の値ではないというちあいがある。　　
 ```
 // メソッド
 def isAlphameric(str: String): Boolean = str.matches("[a-zA-Z0-9\\s]")
@@ -32,6 +34,15 @@ val isAlphamericF = (str: String) => str.matches("[a-zA-z0-9\\s]")
 val si AlphamericF = new Function1[String, Boolean] {
  def apply(str: String) = str.matches("[a-zA-z0-9\\s]")
  }
+```
+
+- 高階関数  
+関数を引数にとったり、関数を返すメソッド、関数のことを高階関数とよぶ  
+```
+def double(n: Int, f: Int => Int): Int = {
+    f(f(n))
+}
+double(2, m => m * 2)
 ```
 
 - if/else  ~~~~
@@ -166,6 +177,17 @@ new Thread {
 }.start()~~
 ```
 
+- 無名関数  
+Scalaでは関数を作成するためのシンタックスシュガーが用意されている  
+カリー化を行うことができる. 関数のチェインで表現する方法  
+```
+val add = (x: Int, y: Int) => x + y
+val addCurried = (x: Int) => ((y: Int) => x + y)
+
+add(1 ,2)
+addCurried(1)(2)
+```
+
 - 型  
 Unit: 意味のある値を持たない型＝void  
 AnyVal, AnyRef, Any: AnyRefはユーザーが定義した型、Anyは全ての型のスーパークラス  
@@ -199,6 +221,9 @@ class Point(x: Int, y: Int) {
 
 - トレイト  
 classのnewでインスタンス化できる機能を除いた  
+インスタンス化するには、クラスに継承してからインスタンス化する必要がある。　　
+複数のトレイトをmixinする際は、mixinされた順番で継承される。（線形化）  
+
 ```
 trait Namable {
     val name: String
@@ -231,9 +256,7 @@ class Point2(val x: Int, val y: Int) {
      def apply(x: Int, y: Int): Point2 = new Point2(x, y)
    }
 
-```
-caseを使えば、同じ処理を一文で書くことができる  
-```
+//caseを使えば、同じ処理を一文で書くことができる  
 case class Point(x: Int, y: Int)
 ```
 
@@ -249,9 +272,32 @@ case class Point(x: Int, y: Int)
 
 
 - オブジェクト(object)について  
-シングルトンオブジェクトを示す。インスタンスが自動で生成される。  
+2つの使い方がある.  
+1つ目：シングルトンオブジェクトを示す。インスタンスが自動で生成される。 
 唯一のインスタンスで、クラスのように複数のインスタンスを作成することができない。  
+2つ目：同一名のクラスを用いることで、    
 object.methodというクラスのようにメソッドにアクセスできる  
+コンパニオンオブジェクトと呼ばれる
+```
+class Point(x: Int, y: Int)
+object Point(
+    def apply(x: Int, y: Int): Point = new Point(x, y)
+}
+
+// caseを使えばもっと簡単にかける  
+case calss Point(x: Int ,y: Int)   
+
+// コンパニオンオブジェクトに対応するクラスに対して特権的なアクセス権を持つ  
+class Person(name: String, age: Int, private val weight: Int)
+
+object Person {
+  def printWeight(): Unit = {
+    val taro = new Person("Taro", 20, 70)
+// private な変数にアクセスできる
+    println(taro.weight)
+  }
+}
+``` 
 [公式ドキュメント](https://docs.scala-lang.org/ja/tour/singleton-objects.html)  
 [参照](http://shikashikamemo.hatenablog.com/entry/2014/04/07/220341)   
  
