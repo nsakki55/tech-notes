@@ -3,7 +3,7 @@
 
 作者　要点まとめ  
 https://github.com/beproud/jisou-programmer-excerption  
-
+　　
 ## chapter 1
 - 関数名から想像できる型の戻り値を返す  
 is_, has_で始まる関数の場合はboolean型を返すようにする  
