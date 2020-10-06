@@ -1,0 +1,14 @@
+SELECT
+product_id,
+score,
+ROW_NUMBER() OVER(ORDER BY score DESC) AS row,
+       SUM(score) OVER(ORDER BY score DESC
+           ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) AS cum_socre,
+       AVG(score) OVER(ORDER BY score DESC
+           ROWS BETWEEN 1 PRECEDING AND 1 FOLLOWING ) AS local_avg,
+        FIRST_VALUE(product_id) OVER(ORDER BY score DESC
+            ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) AS first_value,
+       LAST_VALUE(product_id) OVER(ORDER BY score DESC
+           ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING ) AS last_value
+FROM popular_products
+ORDER BY row

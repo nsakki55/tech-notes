@@ -1,0 +1,3 @@
+SELECT
+CURRENT_DATE AS dt,
+GETDATE() as stamp
