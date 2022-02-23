@@ -1,0 +1,22 @@
+x <- runif(1000*50, min=0, max=12)
+xm <- matrix(x, nrow=1000, ncol=50)
+z50 <- apply(xm, 1, mean)
+hist(z50)
+
+plot(function(x)dexp(x, rate=5))
+x <- rexp(1000*50, rate=5)
+xm <- matrix(x, nrow=1000, ncol=50)
+z <- apply(xm, 1, mean)
+hist(z, xlim=c(0.1, 0.3), ylim=c(0, 15), prob=TRUE, ylab = "")
+par(new=TRUE)
+plot(function(x)dnorm(x, mean=mean(z), sd=sd(z)), xlim=c(0.1, 0.3), ylim=c(0, 15), xlab="", yalb="", lwd=2)
+
+ave <- numeric(10000)
+x <- rcauchy(10000)
+for(n in 1:10000) ave[n] <- mean(x[1:n])
+plot(1:10000, ave)
+abline(h=0)
+
+sd_cauchy <- numeric(10000)
+for(n in 1:10000) sd_cauchy[n] <- sd(x[1:n])
+plot(1:10000, sd_cauchy)
