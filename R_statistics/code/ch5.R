@@ -1,4 +1,5 @@
-data <- read.csv('shidouhou.csv',header=T,fileEncoding="CP932")
+# data <- read.csv('data/shidouhouU8.csv',header=T,fileEncoding="CP932")
+data <- read.csv('data/shidouhouU8.csv')
 psych_test <- data$psych_test
 psych_test
 

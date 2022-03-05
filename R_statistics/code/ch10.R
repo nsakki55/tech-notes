@@ -1,7 +1,8 @@
-animal <- read.csv('animal.csv')[,2:4]
-colnames(animal) <- c('Species', 'Body_weight', 'Brain_weight')
-
+#animal <- read.csv('animal.csv')[,2:4]
+animal <- read.csv('data/animal.txt', header=TRUE)
 animal
+#colnames(animal) <- c('Species', 'Body_weight', 'Brain_weight')
+
 plot(animal$Body_weight, animal$Brain_weight)
 cor(animal$Body_weight, animal$Brain_weight)
 

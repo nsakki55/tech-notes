@@ -1,4 +1,5 @@
-data <- read.csv('shidouhou.csv',header=T,fileEncoding="CP932")
+#data <- read.csv('shidouhou.csv',header=T,fileEncoding="CP932")
+data <- read.csv('data/shidouhouU8.csv')
 data
 
 curve(df(x, 3, 16), 0, 5)
@@ -56,6 +57,8 @@ total_sqrt_sum
 group_sqrt_sum <- sum(group_dif^2)
 group_sqrt_sum
 
+summary(aov(stat2~method2))
+
 TukeyHSD(aov(stat2~method2))
 
 preference <- c(7, 8, 9, 5, 6, 5, 4, 7, 1, 3, 8, 6, 7, 2, 5)
@@ -68,6 +71,7 @@ human <- factor(rep(c('A', 'B', 'C', 'D', 'E'), 3))
 human
 
 summary(aov(preference ~ subject + human))
+qf(0.05, 2, 8, lower.tail=FALSE)
 
 taste <- c(6, 4 ,5, 3, 2, 10, 8, 10, 8, 9, 11, 12, 12, 10, 10, 5, 4, 2, 2, 2, 7, 6, 5, 4, 3, 12, 8, 5, 6, 4)
 temperature <- factor(c(rep('reizoko', 15), rep('zyoon', 15)))

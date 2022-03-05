@@ -1,6 +1,10 @@
-data <- read.csv('shidouhou.csv',header=T,fileEncoding="CP932")
+#data <- read.csv('shidouhou.csv',header=T,fileEncoding="CP932")
+data <- read.csv('data/shidouhouU8.csv')
 stat1_man <- data[data$sex=='男', ]$stat_test1
 stat1_woman <- data[data$sex=='女', ]$stat_test1
+stat1_man
+stat1_woman
+
 
 var_pool <- sqrt(((length(stat1_man) - 1) * var(stat1_man) + (length(stat1_woman) - 1) * var(stat1_woman)) / (length(stat1_man) + length(stat1_woman) - 2))
 var_pool
