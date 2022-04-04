@@ -1,0 +1,1132 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: Sample Wordpress template with ALB, Auto Scaling, EC2, RDS, and EFS with
+  logging enabled.
+Parameters:
+  VpcCIDR:
+    Type: String
+    Description: Please enter the IP range (CIDR notation) for this VPC
+    Default: 10.192.0.0/16
+  PublicSubnet1CIDR:
+    Type: String
+    Description: Please enter the IP range (CIDR notation) for the public subnet in
+      the first Availability Zone
+    Default: 10.192.10.0/24
+  PublicSubnet2CIDR:
+    Type: String
+    Description: Please enter the IP range (CIDR notation) for the public subnet in
+      the second Availability Zone
+    Default: 10.192.11.0/24
+  PrivateSubnet1CIDR:
+    Type: String
+    Description: Please enter the IP range (CIDR notation) for the private subnet
+      in the first Availability Zone
+    Default: 10.192.20.0/24
+  PrivateSubnet2CIDR:
+    Type: String
+    Description: Please enter the IP range (CIDR notation) for the private subnet
+      in the second Availability Zone
+    Default: 10.192.21.0/24
+  InstanceType:
+    Type: String
+    Default: t3.small
+    AllowedValues:
+    - t3.micro
+    - t3.small
+    - t3.medium
+    - t3.large
+    - t3.xlarge
+    - t3.2xlarge
+    - m5.large
+    - m5.xlarge
+    - m5.2xlarge
+    - m5.4xlarge
+    - m5.8xlarge
+    - m5.12xlarge
+    - m5.16xlarge
+    - m5.24xlarge
+    - r5.large
+    - r5.xlarge
+    - r5.2xlarge
+    - r5.4xlarge
+    - r5.8xlarge
+    - r5.12xlarge
+    - r5.16xlarge
+    - r5.24xlarge
+    Description: Instance Type for EC2 instance
+  LatestImageId:
+    Type: AWS::SSM::Parameter::Value<AWS::EC2::Image::Id>
+    Description: Latest AMI ID of Amazon Linux 2 for web server instance
+    Default: /aws/service/ami-amazon-linux-latest/amzn2-ami-hvm-x86_64-gp2
+  Ec2KeyPair:
+    Type: AWS::EC2::KeyPair::KeyName
+    Description: Key Pair Name for web server instance
+  DBServerInstanceType:
+    Type: String
+    Description: The instance type of database server (e.g. db.t3.medium)
+    Default: db.t3.medium
+  DBMasterUserPassword:
+    Type: String
+    Description: The master password for the DB instance
+    Default: wordpress
+    NoEcho: true
+    MinLength: 8
+    MaxLength: 32
+  BlogTitle:
+    Description: The title of the WordPress blog
+    Type: String
+    Default: Sample web system using Wordpress
+  BlogAdminUsername:
+    Description: User name for the WordPress admin
+    Type: String
+    Default: admin
+  BlogAdminPassword:
+    Description: Password for the WordPress admin
+    Type: String
+    NoEcho: true
+    MinLength: 8
+    MaxLength: 32
+  BlogAdminEMail:
+    Description: The email address of the WordPress admin.
+    Type: String
+Metadata:
+  AWS::CloudFormation::Interface:
+    ParameterGroups:
+    - Label:
+        default: Wordpress Configuration
+      Parameters:
+      - BlogTitle
+      - BlogAdminUsername
+      - BlogAdminPassword
+      - BlogAdminEMail
+    - Label:
+        default: VPC Configuration
+      Parameters:
+      - VpcCIDR
+      - PublicSubnet1CIDR
+      - PublicSubnet2CIDR
+      - PrivateSubnet1CIDR
+      - PrivateSubnet2CIDR
+    - Label:
+        default: EC2 Instance Configuration
+      Parameters:
+      - InstanceType
+      - LatestImageId
+      - Ec2KeyPair
+    - Label:
+        default: DB Instance Configuration
+      Parameters:
+      - DBServerInstanceType
+      - DBMasterUserPassword
+Mappings:
+  ELBAccountId:
+    us-east-1:
+      AccountId: '127311923021'
+    us-east-2:
+      AccountId: '033677994240'
+    us-west-1:
+      AccountId: '027434742980'
+    us-west-2:
+      AccountId: '797873946194'
+    ca-central-1:
+      AccountId: '985666609251'
+    eu-central-1:
+      AccountId: '054676820928'
+    eu-west-1:
+      AccountId: '156460612806'
+    eu-west-2:
+      AccountId: '652711504416'
+    eu-west-3:
+      AccountId: '009996457667'
+    eu-north-1:
+      AccountId: '897822967062'
+    ap-east-1:
+      AccountId: '754344448648'
+    ap-northeast-1:
+      AccountId: '582318560864'
+    ap-northeast-2:
+      AccountId: '600734575887'
+    ap-southeast-1:
+      AccountId: '114774131450'
+    ap-southeast-2:
+      AccountId: '783225319266'
+    ap-south-1:
+      AccountId: '718504428378'
+    me-south-1:
+      AccountId: '076674570225'
+    sa-east-1:
+      AccountId: '507241528517'
+    us-gov-west-1:
+      AccountId: '048591011584'
+    us-gov-east-1:
+      AccountId: '190560391635'
+    cn-north-1:
+      AccountId: '638102146993'
+    cn-northwest-1:
+      AccountId: '037604701340'
+Resources:
+  S3Bucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName:
+        Fn::Join:
+        - ''
+        - - Ref: AWS::StackName
+          - '-'
+          - Ref: AWS::AccountId
+          - -wordpress-bucket
+      AccessControl: Private
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
+  S3BucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket:
+        Ref: S3Bucket
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+        - Effect: Allow
+          Action:
+          - s3:PutObject
+          Resource:
+            Fn::Sub: arn:aws:s3:::${S3Bucket}/*
+          Principal:
+            AWS:
+              Fn::FindInMap:
+              - ELBAccountId
+              - Ref: AWS::Region
+              - AccountId
+  VPC:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock:
+        Ref: VpcCIDR
+      EnableDnsSupport: true
+      EnableDnsHostnames: true
+      Tags:
+      - Key: Name
+        Value:
+          Ref: AWS::StackName
+  InternetGateway:
+    Type: AWS::EC2::InternetGateway
+    Properties:
+      Tags:
+      - Key: Name
+        Value:
+          Ref: AWS::StackName
+  InternetGatewayAttachment:
+    Type: AWS::EC2::VPCGatewayAttachment
+    Properties:
+      InternetGatewayId:
+        Ref: InternetGateway
+      VpcId:
+        Ref: VPC
+  PublicSubnet1:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId:
+        Ref: VPC
+      AvailabilityZone:
+        Fn::Select:
+        - 0
+        - Fn::GetAZs: ''
+      CidrBlock:
+        Ref: PublicSubnet1CIDR
+      MapPublicIpOnLaunch: true
+      Tags:
+      - Key: Name
+        Value:
+          Fn::Sub: ${!Ref AWS::StackName} Public Subnet (AZ1)
+  PublicSubnet2:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId:
+        Ref: VPC
+      AvailabilityZone:
+        Fn::Select:
+        - 1
+        - Fn::GetAZs: ''
+      CidrBlock:
+        Ref: PublicSubnet2CIDR
+      MapPublicIpOnLaunch: true
+      Tags:
+      - Key: Name
+        Value:
+          Fn::Sub: ${AWS::StackName} Public Subnet (AZ2)
+  PrivateSubnet1:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId:
+        Ref: VPC
+      AvailabilityZone:
+        Fn::Select:
+        - 0
+        - Fn::GetAZs: ''
+      CidrBlock:
+        Ref: PrivateSubnet1CIDR
+      MapPublicIpOnLaunch: false
+      Tags:
+      - Key: Name
+        Value:
+          Fn::Sub: ${AWS::StackName} Private Subnet (AZ1)
+  PrivateSubnet2:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId:
+        Ref: VPC
+      AvailabilityZone:
+        Fn::Select:
+        - 1
+        - Fn::GetAZs: ''
+      CidrBlock:
+        Ref: PrivateSubnet2CIDR
+      MapPublicIpOnLaunch: false
+      Tags:
+      - Key: Name
+        Value:
+          Fn::Sub: ${AWS::StackName} Private Subnet (AZ2)
+  PublicRouteTable:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId:
+        Ref: VPC
+      Tags:
+      - Key: Name
+        Value:
+          Fn::Sub: ${AWS::StackName} Public Routes
+  DefaultPublicRoute:
+    Type: AWS::EC2::Route
+    DependsOn: InternetGatewayAttachment
+    Properties:
+      RouteTableId:
+        Ref: PublicRouteTable
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId:
+        Ref: InternetGateway
+  PublicSubnet1RouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId:
+        Ref: PublicRouteTable
+      SubnetId:
+        Ref: PublicSubnet1
+  PublicSubnet2RouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId:
+        Ref: PublicRouteTable
+      SubnetId:
+        Ref: PublicSubnet2
+  LoadBalancer:
+    Type: AWS::ElasticLoadBalancingV2::LoadBalancer
+    Properties:
+      Scheme: internet-facing
+      LoadBalancerAttributes:
+      - Key: access_logs.s3.enabled
+        Value: true
+      - Key: access_logs.s3.bucket
+        Value:
+          Ref: S3Bucket
+      Subnets:
+      - Ref: PublicSubnet1
+      - Ref: PublicSubnet2
+      SecurityGroups:
+      - Ref: LoadBalancerSecurityGroup
+  LoadBalancerSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: for-wordpress-loadbalancer
+      VpcId:
+        Ref: VPC
+  LoadBalancerSecurityGroupInWorld:
+    Type: AWS::EC2::SecurityGroupIngress
+    Properties:
+      GroupId:
+        Ref: LoadBalancerSecurityGroup
+      IpProtocol: tcp
+      FromPort: 80
+      ToPort: 80
+      CidrIp: 0.0.0.0/0
+  LoadBalancerListener:
+    Type: AWS::ElasticLoadBalancingV2::Listener
+    Properties:
+      DefaultActions:
+      - Type: forward
+        TargetGroupArn:
+          Ref: LoadBalancerTargetGroup
+      LoadBalancerArn:
+        Ref: LoadBalancer
+      Port: 80
+      Protocol: HTTP
+  LoadBalancerTargetGroup:
+    Type: AWS::ElasticLoadBalancingV2::TargetGroup
+    Properties:
+      HealthCheckIntervalSeconds: 15
+      HealthCheckPath: /
+      HealthCheckPort: '80'
+      HealthCheckProtocol: HTTP
+      HealthCheckTimeoutSeconds: 10
+      HealthyThresholdCount: 2
+      UnhealthyThresholdCount: 2
+      Matcher:
+        HttpCode: 200-299
+      Port: 80
+      Protocol: HTTP
+      VpcId:
+        Ref: VPC
+  AutoScalingGroup:
+    Type: AWS::AutoScaling::AutoScalingGroup
+    DependsOn:
+    - EFSMountTarget1
+    - EFSMountTarget2
+    Properties:
+      LaunchConfigurationName:
+        Ref: LaunchConfiguration
+      TargetGroupARNs:
+      - Ref: LoadBalancerTargetGroup
+      MinSize: 2
+      MaxSize: 10
+      Cooldown: 60
+      HealthCheckGracePeriod: 300
+      HealthCheckType: ELB
+      VPCZoneIdentifier:
+      - Ref: PublicSubnet1
+      - Ref: PublicSubnet2
+      Tags:
+      - PropagateAtLaunch: true
+        Key: Name
+        Value: wordpress-auto-scaling
+    CreationPolicy:
+      ResourceSignal:
+        Timeout: PT10M
+    UpdatePolicy:
+      AutoScalingRollingUpdate:
+        PauseTime: PT10M
+        SuspendProcesses:
+        - HealthCheck
+        - ReplaceUnhealthy
+        - AZRebalance
+        - AlarmNotification
+        - ScheduledActions
+        WaitOnResourceSignals: true
+  ScalingUpPolicy:
+    Type: AWS::AutoScaling::ScalingPolicy
+    Properties:
+      AutoScalingGroupName:
+        Ref: AutoScalingGroup
+      AdjustmentType: PercentChangeInCapacity
+      MinAdjustmentMagnitude: 1
+      Cooldown: 900
+      ScalingAdjustment: 25
+  CPUHighAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmDescription: Alarm if CPU load is high.
+      ComparisonOperator: GreaterThanThreshold
+      Threshold: 60
+      AlarmActions:
+      - Ref: ScalingUpPolicy
+      Namespace: AWS/EC2
+      MetricName: CPUUtilization
+      Dimensions:
+      - Name: AutoScalingGroupName
+        Value:
+          Ref: AutoScalingGroup
+      Period: 300
+      EvaluationPeriods: 1
+      Statistic: Average
+  ScalingDownPolicy:
+    Type: AWS::AutoScaling::ScalingPolicy
+    Properties:
+      AutoScalingGroupName:
+        Ref: AutoScalingGroup
+      AdjustmentType: PercentChangeInCapacity
+      MinAdjustmentMagnitude: 1
+      Cooldown: 300
+      ScalingAdjustment: -25
+  CPULowAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmDescription: Alarm if CPU load is low.
+      ComparisonOperator: LessThanThreshold
+      Threshold: 30
+      AlarmActions:
+      - Ref: ScalingDownPolicy
+      Namespace: AWS/EC2
+      MetricName: CPUUtilization
+      Dimensions:
+      - Name: AutoScalingGroupName
+        Value:
+          Ref: AutoScalingGroup
+      Period: 300
+      Statistic: Average
+      EvaluationPeriods: 3
+  Ec2InstanceProfile:
+    Type: AWS::IAM::InstanceProfile
+    Properties:
+      Roles:
+      - Ref: Ec2IAMRole
+  Ec2IAMRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+        - Effect: Allow
+          Principal:
+            Service: ec2.amazonaws.com
+          Action: sts:AssumeRole
+      ManagedPolicyArns:
+      - arn:aws:iam::aws:policy/AmazonS3FullAccess
+      - arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy
+  LaunchConfiguration:
+    DependsOn:
+    - Database1
+    - Database2
+    Type: AWS::AutoScaling::LaunchConfiguration
+    Metadata:
+      AWS::CloudFormation::Init:
+        configSets:
+          default:
+          - mount
+          - extras
+          - config
+        mount:
+          packages:
+            yum:
+              amazon-efs-utils: []
+          commands:
+            mount:
+              command:
+                Fn::Sub: mkdir /var/www && echo "${EFSFileSystem}:/ /var/www efs tls,_netdev
+                  0 0" >> /etc/fstab && mount -a -t efs
+              test: '[ ! -d /var/www ]'
+        extras:
+          commands:
+            enable_php:
+              command: amazon-linux-extras enable php7.3
+              test: "! grep -Fxq '[amzn2extra-php7.3]' /etc/yum.repos.d/amzn2-extras.repo"
+        config:
+          packages:
+            yum:
+              httpd: []
+              php: []
+              php-gd: []
+              php-mysqlnd: []
+              php-mbstring: []
+              php-xmlrpc: []
+              mariadb: []
+          files:
+            /etc/httpd/conf.d/wordpress.conf:
+              content: "<Directory \"/var/www/html\">\nOptions Indexes FollowSymLinks\n\
+                AllowOverride All\nRequire all granted\n</Directory>\n"
+              mode: '000500'
+              owner: root
+              group: root
+            /root/wordpress.sh:
+              content:
+                Fn::Sub:
+                - "#!/bin/bash -ex\nif mkdir /var/www/lock; then\n  cd /var/www/html\n\
+                  \  wget -q -T 60 https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar\n\
+                  \  if ! php wp-cli.phar core is-installed --allow-root; then\n \
+                  \   php wp-cli.phar core download --allow-root --version=5.2.4\n\
+                  \    php wp-cli.phar core config --dbname='wordpress' --dbuser='wordpress'\
+                  \ --dbpass='${DBMasterUserPassword}' --dbhost='${DBHost}' --allow-root\n\
+                  \    php wp-cli.phar core install --url='http://${DomainName}' --title='${BlogTitle}'\
+                  \ --admin_user='${BlogAdminUsername}' --admin_password='${BlogAdminPassword}'\
+                  \ --admin_email='${BlogAdminEMail}' --skip-email --allow-root\n\
+                  \  fi\n  chown -R apache:apache /var/www/html\n  chmod u+wrx /var/www/html/wp-content/*\n\
+                  \  rm -f wp-cli.phar\nfi\n"
+                - BlogTitle:
+                    Ref: BlogTitle
+                  BlogAdminUsername:
+                    Ref: BlogAdminUsername
+                  BlogAdminPassword:
+                    Ref: BlogAdminPassword
+                  BlogAdminEMail:
+                    Ref: BlogAdminEMail
+                  DBHost:
+                    Fn::GetAtt:
+                    - DatabaseCluster
+                    - Endpoint.Address
+                  DBMasterUserPassword:
+                    Ref: DBMasterUserPassword
+                  DomainName:
+                    Fn::GetAtt:
+                    - LoadBalancer
+                    - DNSName
+              mode: '000500'
+              owner: root
+              group: root
+            /etc/td-agent/td-agent.conf:
+              content:
+                Fn::Sub:
+                - "<source>\n  @type tail\n  @label @META\n  @id input_tail_access_log\n\
+                  \  <parse>\n    @type apache2\n    keep_time_key true\n  </parse>\n\
+                  \  path /var/log/httpd/access_log\n  pos_file /var/log/td-agent/access.log.pos\n\
+                  \  tag apache.access\n</source>\n\n<source>\n  @type tail\n  @label\
+                  \ @META\n  @id input_tail_error_log\n  <parse>\n    @type apache_error\n\
+                  \    keep_time_key true\n  </parse>\n  path /var/log/httpd/error_log\n\
+                  \  pos_file /var/log/td-agent/error.log.pos\n  tag apache.error\n\
+                  </source>\n\n<label @META>\n  <match **>\n    @type ec2_metadata\n\
+                  \    @label @S3\n    output_tag ${!tag}.${!instance_id}\n    <record>\n\
+                  \      instance_id   ${!instance_id}\n    </record>\n  </match>\n\
+                  </label>\n\n<label @S3>\n  <match apache.**>\n    @type s3\n   \
+                  \ s3_bucket ${Bucket}\n    s3_region ${Region}\n    path ${!tag[0]}_${!tag[1]}/instanceId=${!instance_id}/\n\
+                  \    <format>\n      @type json\n    </format>\n    <buffer tag,time,instance_id>\n\
+                  \      @type file\n      path /var/log/td-agent/buffer/${!tag[0]}\n\
+                  \      timekey 60\n      timekey_wait 30\n      chunk_limit_size\
+                  \ 256m\n      timekey_use_utc true\n    </buffer>\n    time_slice_format\
+                  \ %Y%m%d%H%M\n  </match>\n</label>\n"
+                - Region:
+                    Ref: AWS::Region
+                  Bucket:
+                    Ref: S3Bucket
+              mode: '000500'
+              owner: root
+              group: root
+            /opt/aws/amazon-cloudwatch-agent/etc/amazon-cloudwatch-agent.json:
+              content:
+                Fn::Sub:
+                - "{\n  \"logs\": {\n    \"logs_collected\": {\n      \"files\": {\n\
+                  \        \"collect_list\": [\n          {\n            \"file_path\"\
+                  : \"/var/log/cfn-init.log\",\n            \"log_group_name\": \"\
+                  ${Environment}/cfn-init.log\"\n          },\n          {\n     \
+                  \       \"file_path\": \"/var/log/td-agent/td-agent.log\",\n   \
+                  \         \"log_group_name\": \"${Environment}/td-agent.log\"\n\
+                  \          }\n        ]\n      }\n    }\n  }\n}\n"
+                - Environment:
+                    Ref: AWS::StackName
+              mode: '000500'
+              owner: root
+              group: root
+          commands:
+            wordpress:
+              command: /root/wordpress.sh
+              cwd: /var/www/html
+            a_fluentd:
+              command: curl -L https://toolbelt.treasuredata.com/sh/install-amazon2-td-agent3.sh
+                | sh
+            b_fluentd:
+              command: sed -E -i -e 's/(TD_AGENT_USER=)td-agent/\1root/' -e 's/(TD_AGENT_GROUP=)td-agent/\1root/'
+                /etc/init.d/td-agent
+            c_fluentd:
+              command: sed -E -i -e 's/(User=)td-agent/\1root/' -e 's/(Group=)td-agent/\1root/'
+                /lib/systemd/system/td-agent.service
+            d_fluentd:
+              command: sed -E -i -e 's/^(\[Service\])/\1\nStartLimitBurst=5\nStartLimitIntervalSec=10\n/g'
+                /lib/systemd/system/td-agent.service
+            e_fluentd:
+              command: td-agent-gem install fluent-plugin-ec2-metadata --no-document
+            f_fluentd:
+              command: systemctl enable td-agent.service
+            g_fluentd:
+              command: systemctl start td-agent.service
+              ignoreErrors: true
+            a_cw_stop_service:
+              command: /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl
+                -a stop
+            b_cw_start_service:
+              command: /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl
+                -a fetch-config -m ec2 -c file:/opt/aws/amazon-cloudwatch-agent/etc/amazon-cloudwatch-agent.json
+                -s
+          services:
+            sysvinit:
+              httpd:
+                enabled: true
+                ensureRunning: true
+    Properties:
+      AssociatePublicIpAddress: true
+      ImageId:
+        Ref: LatestImageId
+      InstanceType:
+        Ref: InstanceType
+      IamInstanceProfile:
+        Ref: Ec2InstanceProfile
+      KeyName:
+        Ref: Ec2KeyPair
+      SecurityGroups:
+      - Ref: Ec2SecurityGroup
+      UserData:
+        Fn::Base64:
+          Fn::Sub: "#!/bin/bash -ex\ntrap '/opt/aws/bin/cfn-signal -e 1 --stack ${AWS::StackName}\
+            \ --resource AutoScalingGroup --region ${AWS::Region}' ERR\nrpm -Uvh https://s3.amazonaws.com/amazoncloudwatch-agent/amazon_linux/amd64/latest/amazon-cloudwatch-agent.rpm\n\
+            /opt/aws/bin/cfn-init -v --stack ${AWS::StackName} --resource LaunchConfiguration\
+            \ --region ${AWS::Region}\n/opt/aws/bin/cfn-signal -e 0 --stack ${AWS::StackName}\
+            \ --resource AutoScalingGroup --region ${AWS::Region}\n"
+  Ec2SecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: wordpress-ec2
+      VpcId:
+        Ref: VPC
+      SecurityGroupIngress:
+      - FromPort: 80
+        IpProtocol: tcp
+        SourceSecurityGroupId:
+          Ref: LoadBalancerSecurityGroup
+        ToPort: 80
+  DBSubnetGroup:
+    Type: AWS::RDS::DBSubnetGroup
+    Properties:
+      DBSubnetGroupDescription: DB subnet group
+      SubnetIds:
+      - Ref: PrivateSubnet1
+      - Ref: PrivateSubnet2
+  DatabaseCluster:
+    Type: AWS::RDS::DBCluster
+    DeletionPolicy: Snapshot
+    UpdateReplacePolicy: Snapshot
+    Properties:
+      DatabaseName: wordpress
+      Engine: aurora
+      MasterUsername: wordpress
+      MasterUserPassword:
+        Ref: DBMasterUserPassword
+      DBSubnetGroupName:
+        Ref: DBSubnetGroup
+      VpcSecurityGroupIds:
+      - Ref: DatabaseSecurityGroup
+      DBClusterParameterGroupName:
+        Ref: DatabaseClusterParameterGroup
+      EnableCloudwatchLogsExports:
+      - general
+      - error
+      - slowquery
+      - audit
+  Database1:
+    Type: AWS::RDS::DBInstance
+    Properties:
+      DBClusterIdentifier:
+        Ref: DatabaseCluster
+      Engine: aurora
+      DBInstanceClass:
+        Ref: DBServerInstanceType
+      DBSubnetGroupName:
+        Ref: DBSubnetGroup
+  Database2:
+    Type: AWS::RDS::DBInstance
+    Properties:
+      DBClusterIdentifier:
+        Ref: DatabaseCluster
+      Engine: aurora
+      DBInstanceClass:
+        Ref: DBServerInstanceType
+      DBSubnetGroupName:
+        Ref: DBSubnetGroup
+  DatabaseSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: wordpress-rds
+      VpcId:
+        Ref: VPC
+      SecurityGroupIngress:
+      - IpProtocol: tcp
+        FromPort: 3306
+        ToPort: 3306
+        SourceSecurityGroupId:
+          Ref: Ec2SecurityGroup
+  DatabaseClusterParameterGroup:
+    Type: AWS::RDS::DBClusterParameterGroup
+    Properties:
+      Family: aurora5.6
+      Description: Parameter group for Aurora
+      Parameters:
+        general_log: 1
+        slow_query_log: 1
+        long_query_time: 0
+        server_audit_logging: 1
+        server_audit_events: QUERY
+        log_output: FILE
+  EFSFileSystem:
+    Type: AWS::EFS::FileSystem
+    Properties:
+      FileSystemTags:
+      - Key: Name
+        Value:
+          Fn::Sub: ${AWS::StackName}-efs
+  EFSMountTarget1:
+    Type: AWS::EFS::MountTarget
+    Properties:
+      FileSystemId:
+        Ref: EFSFileSystem
+      SubnetId:
+        Ref: PublicSubnet1
+      SecurityGroups:
+      - Ref: EFSSecurityGroup
+  EFSMountTarget2:
+    Type: AWS::EFS::MountTarget
+    Properties:
+      FileSystemId:
+        Ref: EFSFileSystem
+      SubnetId:
+        Ref: PublicSubnet2
+      SecurityGroups:
+      - Ref: EFSSecurityGroup
+  EFSSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Allowing access to EFS
+      VpcId:
+        Ref: VPC
+      SecurityGroupIngress:
+      - IpProtocol: tcp
+        FromPort: 2049
+        ToPort: 2049
+        SourceSecurityGroupId:
+          Ref: Ec2SecurityGroup
+  FirehoseToS3Role:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+        - Sid: ''
+          Effect: Allow
+          Principal:
+            Service: firehose.amazonaws.com
+          Action: sts:AssumeRole
+          Condition:
+            StringEquals:
+              sts:ExternalId:
+                Ref: AWS::AccountId
+  FirehoseToS3Policy:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyName: Permissions-Policy-For-Firehose
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+        - Effect: Allow
+          Action:
+          - s3:AbortMultipartUpload
+          - s3:GetBucketLocation
+          - s3:GetObject
+          - s3:ListBucket
+          - s3:ListBucketMultipartUploads
+          - s3:PutObject
+          Resource:
+          - Fn::Sub: arn:aws:s3:::${S3Bucket}
+          - Fn::Sub: arn:aws:s3:::${S3Bucket}*
+        - Effect: Allow
+          Action:
+          - lambda:InvokeFunction
+          - lambda:GetFunctionConfiguration
+          - logs:*
+          - kms:*
+          Resource: '*'
+      Roles:
+      - Ref: FirehoseToS3Role
+  LambdaRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+        - Sid: ''
+          Effect: Allow
+          Principal:
+            Service: lambda.amazonaws.com
+          Action: sts:AssumeRole
+      Path: /
+      Policies:
+      - PolicyName: root
+        PolicyDocument:
+          Version: '2012-10-17'
+          Statement:
+          - Effect: Allow
+            Action:
+            - kinesis:*
+            - firehose:*
+            - logs:*
+            - kms:*
+            Resource: '*'
+  LambdaForFirehoseTransformation:
+    Type: AWS::Lambda::Function
+    Properties:
+      Handler: index.handler
+      Runtime: python3.8
+      Timeout: 300
+      Role:
+        Fn::GetAtt:
+        - LambdaRole
+        - Arn
+      Code:
+        S3Bucket: sample-log-datalake-nagae
+        S3Key: cfn-package/fe54677ffd1f9525412692790ec1eafb
+  FirehoseDeliveryStreamForAuroraAuditLogs:
+    Type: AWS::KinesisFirehose::DeliveryStream
+    Properties:
+      ExtendedS3DestinationConfiguration:
+        BucketARN:
+          Fn::Sub: arn:aws:s3:::${S3Bucket}
+        BufferingHints:
+          IntervalInSeconds: '60'
+          SizeInMBs: '50'
+        CompressionFormat: UNCOMPRESSED
+        Prefix: firehose/aurora_audit_logs/
+        RoleARN:
+          Fn::GetAtt:
+          - FirehoseToS3Role
+          - Arn
+        ProcessingConfiguration:
+          Enabled: true
+          Processors:
+          - Type: Lambda
+            Parameters:
+            - ParameterName: LambdaArn
+              ParameterValue:
+                Fn::GetAtt:
+                - LambdaForFirehoseTransformation
+                - Arn
+            - ParameterName: NumberOfRetries
+              ParameterValue: 3
+            - ParameterName: RoleArn
+              ParameterValue:
+                Fn::GetAtt:
+                - FirehoseToS3Role
+                - Arn
+            - ParameterName: BufferSizeInMBs
+              ParameterValue: 3
+            - ParameterName: BufferIntervalInSeconds
+              ParameterValue: 60
+  FirehoseDeliveryStreamForAuroraErrorLogs:
+    Type: AWS::KinesisFirehose::DeliveryStream
+    Properties:
+      ExtendedS3DestinationConfiguration:
+        BucketARN:
+          Fn::Sub: arn:aws:s3:::${S3Bucket}
+        BufferingHints:
+          IntervalInSeconds: '60'
+          SizeInMBs: '50'
+        CompressionFormat: UNCOMPRESSED
+        Prefix: firehose/aurora_error_logs/
+        RoleARN:
+          Fn::GetAtt:
+          - FirehoseToS3Role
+          - Arn
+        ProcessingConfiguration:
+          Enabled: true
+          Processors:
+          - Type: Lambda
+            Parameters:
+            - ParameterName: LambdaArn
+              ParameterValue:
+                Fn::GetAtt:
+                - LambdaForFirehoseTransformation
+                - Arn
+            - ParameterName: NumberOfRetries
+              ParameterValue: 3
+            - ParameterName: RoleArn
+              ParameterValue:
+                Fn::GetAtt:
+                - FirehoseToS3Role
+                - Arn
+            - ParameterName: BufferSizeInMBs
+              ParameterValue: 3
+            - ParameterName: BufferIntervalInSeconds
+              ParameterValue: 60
+  FirehoseDeliveryStreamForAuroraGeneralLogs:
+    Type: AWS::KinesisFirehose::DeliveryStream
+    Properties:
+      ExtendedS3DestinationConfiguration:
+        BucketARN:
+          Fn::Sub: arn:aws:s3:::${S3Bucket}
+        BufferingHints:
+          IntervalInSeconds: '60'
+          SizeInMBs: '50'
+        CompressionFormat: UNCOMPRESSED
+        Prefix: firehose/aurora_general_logs/
+        RoleARN:
+          Fn::GetAtt:
+          - FirehoseToS3Role
+          - Arn
+        ProcessingConfiguration:
+          Enabled: true
+          Processors:
+          - Type: Lambda
+            Parameters:
+            - ParameterName: LambdaArn
+              ParameterValue:
+                Fn::GetAtt:
+                - LambdaForFirehoseTransformation
+                - Arn
+            - ParameterName: NumberOfRetries
+              ParameterValue: 3
+            - ParameterName: RoleArn
+              ParameterValue:
+                Fn::GetAtt:
+                - FirehoseToS3Role
+                - Arn
+            - ParameterName: BufferSizeInMBs
+              ParameterValue: 3
+            - ParameterName: BufferIntervalInSeconds
+              ParameterValue: 60
+  FirehoseDeliveryStreamForAuroraSlowQueryLogs:
+    Type: AWS::KinesisFirehose::DeliveryStream
+    Properties:
+      ExtendedS3DestinationConfiguration:
+        BucketARN:
+          Fn::Sub: arn:aws:s3:::${S3Bucket}
+        BufferingHints:
+          IntervalInSeconds: '60'
+          SizeInMBs: '50'
+        CompressionFormat: UNCOMPRESSED
+        Prefix: firehose/aurora_slowquery_logs/
+        RoleARN:
+          Fn::GetAtt:
+          - FirehoseToS3Role
+          - Arn
+        ProcessingConfiguration:
+          Enabled: true
+          Processors:
+          - Type: Lambda
+            Parameters:
+            - ParameterName: LambdaArn
+              ParameterValue:
+                Fn::GetAtt:
+                - LambdaForFirehoseTransformation
+                - Arn
+            - ParameterName: NumberOfRetries
+              ParameterValue: 3
+            - ParameterName: RoleArn
+              ParameterValue:
+                Fn::GetAtt:
+                - FirehoseToS3Role
+                - Arn
+            - ParameterName: BufferSizeInMBs
+              ParameterValue: 3
+            - ParameterName: BufferIntervalInSeconds
+              ParameterValue: 60
+  CWLtoKinesisFirehoseRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+        - Effect: Allow
+          Principal:
+            Service:
+              Fn::Sub: logs.${AWS::Region}.amazonaws.com
+          Action:
+          - sts:AssumeRole
+      Path: /
+      Policies:
+      - PolicyName: root
+        PolicyDocument:
+          Version: '2012-10-17'
+          Statement:
+          - Effect: Allow
+            Action:
+            - firehose:*
+            Resource:
+              Fn::Sub: arn:aws:firehose:${AWS::Region}:${AWS::AccountId}:*
+          - Effect: Allow
+            Action:
+            - iam:PassRole
+            Resource: '*'
+  LogGroupAuroraAuditLogs:
+    DependsOn:
+    - DatabaseCluster
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName:
+        Fn::Sub: /aws/rds/cluster/${DatabaseCluster}/audit
+  LogGroupAuroraErrorLogs:
+    DependsOn:
+    - DatabaseCluster
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName:
+        Fn::Sub: /aws/rds/cluster/${DatabaseCluster}/error
+  LogGroupAuroraGeneralLogs:
+    DependsOn:
+    - DatabaseCluster
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName:
+        Fn::Sub: /aws/rds/cluster/${DatabaseCluster}/general
+  LogGroupAuroraSlowQueryLogs:
+    DependsOn:
+    - DatabaseCluster
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName:
+        Fn::Sub: /aws/rds/cluster/${DatabaseCluster}/slowquery
+  SubscriptionFilterForAuroraAuditLogs:
+    DependsOn:
+    - LogGroupAuroraAuditLogs
+    Type: AWS::Logs::SubscriptionFilter
+    Properties:
+      DestinationArn:
+        Fn::GetAtt:
+        - FirehoseDeliveryStreamForAuroraAuditLogs
+        - Arn
+      FilterPattern: ''
+      LogGroupName:
+        Fn::Sub: /aws/rds/cluster/${DatabaseCluster}/audit
+      RoleArn:
+        Fn::GetAtt:
+        - CWLtoKinesisFirehoseRole
+        - Arn
+  SubscriptionFilterForAuroraErrorLogs:
+    DependsOn:
+    - LogGroupAuroraErrorLogs
+    Type: AWS::Logs::SubscriptionFilter
+    Properties:
+      DestinationArn:
+        Fn::GetAtt:
+        - FirehoseDeliveryStreamForAuroraErrorLogs
+        - Arn
+      FilterPattern: ''
+      LogGroupName:
+        Fn::Sub: /aws/rds/cluster/${DatabaseCluster}/error
+      RoleArn:
+        Fn::GetAtt:
+        - CWLtoKinesisFirehoseRole
+        - Arn
+  SubscriptionFilterForAuroraGeneralLogs:
+    DependsOn:
+    - LogGroupAuroraGeneralLogs
+    Type: AWS::Logs::SubscriptionFilter
+    Properties:
+      DestinationArn:
+        Fn::GetAtt:
+        - FirehoseDeliveryStreamForAuroraGeneralLogs
+        - Arn
+      FilterPattern: ''
+      LogGroupName:
+        Fn::Sub: /aws/rds/cluster/${DatabaseCluster}/general
+      RoleArn:
+        Fn::GetAtt:
+        - CWLtoKinesisFirehoseRole
+        - Arn
+  SubscriptionFilterForAuroraSlowQueryLogs:
+    DependsOn:
+    - LogGroupAuroraSlowQueryLogs
+    Type: AWS::Logs::SubscriptionFilter
+    Properties:
+      DestinationArn:
+        Fn::GetAtt:
+        - FirehoseDeliveryStreamForAuroraSlowQueryLogs
+        - Arn
+      FilterPattern: ''
+      LogGroupName:
+        Fn::Sub: /aws/rds/cluster/${DatabaseCluster}/slowquery
+      RoleArn:
+        Fn::GetAtt:
+        - CWLtoKinesisFirehoseRole
+        - Arn
+Outputs:
+  Url:
+    Description: The Public URL of Sample web system
+    Value:
+      Fn::Join:
+      - ''
+      - - http://
+        - Fn::GetAtt:
+          - LoadBalancer
+          - DNSName
