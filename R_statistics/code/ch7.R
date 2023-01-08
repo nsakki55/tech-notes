@@ -2,6 +2,8 @@
 data <- read.csv('data/shidouhouU8.csv')
 data
 
+
+
 curve(df(x, 3, 16), 0, 5)
 
 A <- data[data$method=='A',]$stat_test2
