@@ -12,10 +12,6 @@ type Application struct {
 	os OrderService
 }
 
-func NewApplication(os OrderService) *Application {
-	return &Application{os: os}
-}
-
 func (app *Application) Apply(id int) error {
 	return app.os.Apply(id)
 }

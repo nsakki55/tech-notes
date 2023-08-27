@@ -25,4 +25,5 @@ func (r *Repository) Update(ctx context.Context) error {
 		return err
 	}
 
+	return tx.Commit()
 }
